@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  blog_forteroche:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    container_name: blog_forteroche
+    volumes:
+      - ./:/var/www
+    ports:
+      - "8080:80"
+    networks:
+      - local
+networks:
+  local:
+    name: local
+    external: true

@@ -3,7 +3,7 @@
 /**
  * Classe qui gère les articles.
  */
-class ArticleManager extends AbstractEntityManager 
+class ArticleManager extends AbstractEntityManager
 {
     /**
      * Récupère tous les articles.
@@ -11,16 +11,19 @@ class ArticleManager extends AbstractEntityManager
      */
     public function getAllArticles() : array
     {
-        $sql = "SELECT * FROM article";
+//        $sql = "SELECT * FROM article";
+        $sql = "SELECT article.*, COUNT(comment.id) AS number_of_comments FROM article LEFT JOIN comment ON article.id = comment.id_article GROUP BY article.id;";
+
         $result = $this->db->query($sql);
         $articles = [];
 
         while ($article = $result->fetch()) {
             $articles[] = new Article($article);
         }
+
         return $articles;
     }
-    
+
     /**
      * Récupère un article par son id.
      * @param int $id : l'id de l'article.
@@ -43,7 +46,7 @@ class ArticleManager extends AbstractEntityManager
      * @param Article $article : l'article à ajouter ou modifier.
      * @return void
      */
-    public function addOrUpdateArticle(Article $article) : void 
+    public function addOrUpdateArticle(Article $article) : void
     {
         if ($article->getId() == -1) {
             $this->addArticle($article);
@@ -91,5 +94,14 @@ class ArticleManager extends AbstractEntityManager
     {
         $sql = "DELETE FROM article WHERE id = :id";
         $this->db->query($sql, ['id' => $id]);
+    }
+
+    public function addViewOnArticle(Article $article): void
+    {
+        $this->db->query(
+            "UPDATE article SET viewed = viewed + 1 WHERE id = :id",
+            [
+                'id' => $article->getId()
+            ]);
     }
 }

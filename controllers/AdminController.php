@@ -1,15 +1,35 @@
-<?php 
+<?php
 /**
  * Contrôleur de la partie admin.
  */
- 
-class AdminController {
 
+class AdminController
+{
     /**
-     * Affiche la page d'administration.
+     * Show administration page (monitoring).
      * @return void
      */
-    public function showAdmin() : void
+    public function index() : void
+    {
+        // On vérifie que l'utilisateur est connecté
+        $this->checkIfUserIsConnected();
+
+        // On récupère les articles.
+        $articleManager = new ArticleManager();
+        $articles = $articleManager->getAllArticles();
+
+        // On affice la page d'administration (monitoring)
+        $view = new View("Administration");
+        $view->render("admin/monitoring", [
+            'articles' => $articles,
+            'foo' => 'bar'
+        ]);
+    }
+    /**
+     * Show article edition page.
+     * @return void
+     */
+    public function showArticleEdition(): void
     {
         // On vérifie que l'utilisateur est connecté.
         $this->checkIfUserIsConnected();
@@ -20,7 +40,7 @@ class AdminController {
 
         // On affiche la page d'administration.
         $view = new View("Administration");
-        $view->render("admin", [
+        $view->render("admin/edit_articles", [
             'articles' => $articles
         ]);
     }
@@ -41,7 +61,7 @@ class AdminController {
      * Affichage du formulaire de connexion.
      * @return void
      */
-    public function displayConnectionForm() : void 
+    public function displayConnectionForm() : void
     {
         $view = new View("Connexion");
         $view->render("connectionForm");
@@ -51,7 +71,7 @@ class AdminController {
      * Connexion de l'utilisateur.
      * @return void
      */
-    public function connectUser() : void 
+    public function connectUser() : void
     {
         // On récupère les données du formulaire.
         $login = Utils::request("login");
@@ -80,14 +100,14 @@ class AdminController {
         $_SESSION['idUser'] = $user->getId();
 
         // On redirige vers la page d'administration.
-        Utils::redirect("admin");
+        Utils::redirect("monitoring");
     }
 
     /**
      * Déconnexion de l'utilisateur.
      * @return void
      */
-    public function disconnectUser() : void 
+    public function disconnectUser() : void
     {
         // On déconnecte l'utilisateur.
         unset($_SESSION['user']);
@@ -100,7 +120,7 @@ class AdminController {
      * Affichage du formulaire d'ajout d'un article.
      * @return void
      */
-    public function showUpdateArticleForm() : void 
+    public function showUpdateArticleForm() : void
     {
         $this->checkIfUserIsConnected();
 
@@ -111,7 +131,7 @@ class AdminController {
         $articleManager = new ArticleManager();
         $article = $articleManager->getArticleById($id);
 
-        // Si l'article n'existe pas, on en crée un vide. 
+        // Si l'article n'existe pas, on en crée un vide.
         if (!$article) {
             $article = new Article();
         }
@@ -124,11 +144,11 @@ class AdminController {
     }
 
     /**
-     * Ajout et modification d'un article. 
+     * Ajout et modification d'un article.
      * On sait si un article est ajouté car l'id vaut -1.
      * @return void
      */
-    public function updateArticle() : void 
+    public function updateArticle() : void
     {
         $this->checkIfUserIsConnected();
 
@@ -172,7 +192,7 @@ class AdminController {
         // On supprime l'article.
         $articleManager = new ArticleManager();
         $articleManager->deleteArticle($id);
-       
+
         // On redirige vers la page d'administration.
         Utils::redirect("admin");
     }

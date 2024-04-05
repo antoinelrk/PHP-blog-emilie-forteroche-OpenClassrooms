@@ -14,6 +14,26 @@ Ce fichier contient notamment les informations de connextion à la base de donn�
 
 Pour vous connecter en partie admin, le login est "Emilie" et le mot de passe est "password" (attention aux majuscules)
 
+### Lancez avec Docker
+
+Créer un réseau docker:
+````shell
+docker network create <network_name>
+````
+
+````shell
+docker-compose up -d --build
+````
+
+````shell
+docker exec -ti blog_forteroche /bin/sh
+````
+
+````shell
+php83 -S 0.0.0.0:<PORT>
+````
+
+
 ## Problèmes courants :
 
 Il est possible que la librairie intl ne soit pas activée sur votre serveur par défaut. Cette librairie sert notamment à traduire les dates en francais. Dans ce cas, vous pouvez soit utiliser l'interface de votre serveur local pour activer l'extention (wamp), soit aller modifier directement le fichier _php.ini_. 

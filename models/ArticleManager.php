@@ -7,12 +7,39 @@ class ArticleManager extends AbstractEntityManager
 {
     /**
      * Récupère tous les articles.
+     *
      * @return array : un tableau d'objets Article.
+     * @throws Exception
      */
-    public function getAllArticles() : array
+    public function getAllArticles(array $options = null) : array
     {
-//        $sql = "SELECT * FROM article";
-        $sql = "SELECT article.*, COUNT(comment.id) AS number_of_comments FROM article LEFT JOIN comment ON article.id = comment.id_article GROUP BY article.id;";
+        if (isset($options['type']) || isset($options['order'])) {
+            $type = $options['type'];
+            $order = $options['order'];
+            $filter = "ORDER BY ";
+
+            switch($type) {
+                case "title":
+                    $filter .= "article.$type $order";
+                    break;
+                case "comments":
+                    $filter .= "number_of_comments $order";
+                    break;
+                case "views":
+                    $filter .= "viewed $order";
+                    break;
+                case "created_at":
+                    $filter .= "date_creation $order";
+                    break;
+                default: $filter = null;
+            }
+
+            $sql = "SELECT article.*, COUNT(comment.id) AS number_of_comments FROM article LEFT JOIN comment ON article.id = comment.id_article GROUP BY article.id $filter;";
+        } else {
+            $sql = "SELECT article.*, COUNT(comment.id) AS number_of_comments FROM article LEFT JOIN comment ON article.id = comment.id_article GROUP BY article.id;";
+        }
+
+
 
         $result = $this->db->query($sql);
         $articles = [];

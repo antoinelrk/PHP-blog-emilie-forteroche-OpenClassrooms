@@ -16,7 +16,10 @@ class AdminController
 
         // On récupère les articles.
         $articleManager = new ArticleManager();
-        $articles = $articleManager->getAllArticles();
+        $articles = $articleManager->getAllArticles([
+            'type' => $_GET['type'],
+            'order' => $_GET['order'],
+        ]);
 
         // On affice la page d'administration (monitoring)
         $view = new View("Administration");

@@ -414,3 +414,16 @@ tr.table-line {
 tr.table-line:nth-child(odd) {
     background-color: var(--commentPaleColorDarker);
 }
+
+li.comment-wrapper {
+    position: relative;
+}
+
+a.remove-button {
+    position: absolute;
+    right: 0;
+    display: flex;
+    padding: .25em .5em;
+    background-color: var(--commentColor);
+    color: white;
+}

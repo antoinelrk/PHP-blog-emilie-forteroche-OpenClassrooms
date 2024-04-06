@@ -178,7 +178,7 @@ class AdminController
         $articleManager->addOrUpdateArticle($article);
 
         // On redirige vers la page d'administration.
-        Utils::redirect("admin");
+        Utils::redirect("monitoring");
     }
 
 
@@ -186,7 +186,7 @@ class AdminController
      * Suppression d'un article.
      * @return void
      */
-    public function deleteArticle() : void
+    public function deleteArticle(): void
     {
         $this->checkIfUserIsConnected();
 
@@ -197,6 +197,28 @@ class AdminController
         $articleManager->deleteArticle($id);
 
         // On redirige vers la page d'administration.
-        Utils::redirect("admin");
+        Utils::redirect("monitoring");
+    }
+
+    /**
+     * Remove article's comment.
+     *
+     * @return void
+     */
+    public function deleteComment(): void
+    {
+        $this->checkIfUserIsConnected();
+
+        $id = Utils::request("id", -1);
+        $articleId = Utils::request("articleId", -1);
+
+        // On supprime le commentaire.
+        $commentManager = new CommentManager();
+        $commentManager->deleteComment($id);
+
+        // On redirige vers la page d'administration.
+        Utils::redirect("showArticle", [
+            'id' => $articleId
+        ]);
     }
 }

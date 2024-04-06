@@ -123,6 +123,12 @@ class ArticleManager extends AbstractEntityManager
         $this->db->query($sql, ['id' => $id]);
     }
 
+    /**
+     * Increment view in article.
+     *
+     * @param Article $article
+     * @return void
+     */
     public function addViewOnArticle(Article $article): void
     {
         $this->db->query(

@@ -3,24 +3,54 @@
 /**
  * Classe qui gère les articles.
  */
-class ArticleManager extends AbstractEntityManager 
+class ArticleManager extends AbstractEntityManager
 {
     /**
      * Récupère tous les articles.
+     *
      * @return array : un tableau d'objets Article.
+     * @throws Exception
      */
-    public function getAllArticles() : array
+    public function getAllArticles(array $options = null) : array
     {
-        $sql = "SELECT * FROM article";
+        if (isset($options['type']) || isset($options['order'])) {
+            $type = $options['type'];
+            $order = $options['order'];
+            $filter = "ORDER BY ";
+
+            switch($type) {
+                case "title":
+                    $filter .= "article.$type $order";
+                    break;
+                case "comments":
+                    $filter .= "number_of_comments $order";
+                    break;
+                case "views":
+                    $filter .= "viewed $order";
+                    break;
+                case "created_at":
+                    $filter .= "date_creation $order";
+                    break;
+                default: $filter = null;
+            }
+
+            $sql = "SELECT article.*, COUNT(comment.id) AS number_of_comments FROM article LEFT JOIN comment ON article.id = comment.id_article GROUP BY article.id $filter;";
+        } else {
+            $sql = "SELECT article.*, COUNT(comment.id) AS number_of_comments FROM article LEFT JOIN comment ON article.id = comment.id_article GROUP BY article.id;";
+        }
+
+
+
         $result = $this->db->query($sql);
         $articles = [];
 
         while ($article = $result->fetch()) {
             $articles[] = new Article($article);
         }
+
         return $articles;
     }
-    
+
     /**
      * Récupère un article par son id.
      * @param int $id : l'id de l'article.
@@ -43,7 +73,7 @@ class ArticleManager extends AbstractEntityManager
      * @param Article $article : l'article à ajouter ou modifier.
      * @return void
      */
-    public function addOrUpdateArticle(Article $article) : void 
+    public function addOrUpdateArticle(Article $article) : void
     {
         if ($article->getId() == -1) {
             $this->addArticle($article);
@@ -91,5 +121,20 @@ class ArticleManager extends AbstractEntityManager
     {
         $sql = "DELETE FROM article WHERE id = :id";
         $this->db->query($sql, ['id' => $id]);
+    }
+
+    /**
+     * Increment view in article.
+     *
+     * @param Article $article
+     * @return void
+     */
+    public function addViewOnArticle(Article $article): void
+    {
+        $this->db->query(
+            "UPDATE article SET viewed = viewed + 1 WHERE id = :id",
+            [
+                'id' => $article->getId()
+            ]);
     }
 }

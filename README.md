@@ -14,6 +14,40 @@ Ce fichier contient notamment les informations de connextion à la base de donn�
 
 Pour vous connecter en partie admin, le login est "Emilie" et le mot de passe est "password" (attention aux majuscules)
 
+### Lancez avec Docker
+
+Un fichier ``docker-compose.yml`` est disponible pour lancer la stack directement (Avec base de donnée et phpmyadmin)
+
+Créer un réseau docker & docker-compose:
+````shell
+docker network create <network_name>
+````
+
+Lancer la stack:
+````shell
+docker-compose up -d --build
+````
+Le site ne se lance pas automatiquement (pas de serveur web), donc il faut entrer dans le conteneur:
+````shell
+docker exec -ti blog_forteroche /bin/sh
+````
+
+... et lancer php:
+````shell
+php83 -S 0.0.0.0:80
+````
+
+Les urls:
+- http://localhost:8080 (blog)
+- http://localhost:8081 (phpmyadmin)
+
+Pour se connecter a PMA:
+- Serveur: ``database``
+- Login: ``root``
+- Password: ``local``
+
+**Important: Le fichier ``blog_forteroche_updated.sql`` contient la nouvelle structure de la base de donnée, n'oubliez pas de l'importer avec PhpMyAdmin !**
+
 ## Problèmes courants :
 
 Il est possible que la librairie intl ne soit pas activée sur votre serveur par défaut. Cette librairie sert notamment à traduire les dates en francais. Dans ce cas, vous pouvez soit utiliser l'interface de votre serveur local pour activer l'extention (wamp), soit aller modifier directement le fichier _php.ini_. 

@@ -32,6 +32,6 @@ RUN apk update && \
 
 COPY . .
 
-EXPOSE 80 8080
+EXPOSE 80
 
 ENTRYPOINT ["php-fpm83", "-F"]

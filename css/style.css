@@ -20,6 +20,7 @@
     --dateColor: #3f56a4;
     --quoteColor: #c5cbe4;
     --commentPaleColor: #99a140;
+    --commentPaleColorDarker: #8b933b;
     --commentColor: #255E33;
 }
 
@@ -118,7 +119,7 @@ form .formGrid .submit {
 .foldedCorner {
     position: relative;
     overflow: hidden;
-} 
+}
 
 .foldedCorner::before {
     content: "";
@@ -140,7 +141,7 @@ header {
     flex-direction: column;
     width: 100%;
     margin-bottom: 30px;
-    background-color: var(--headerPaleColor); 
+    background-color: var(--headerPaleColor);
 }
 
 header > nav {
@@ -305,16 +306,17 @@ a.info {
 
 /**
  * Partie admin
- */ 
+ */
 
 .adminArticle {
     margin-bottom: 20px;
     background-color: var(--commentPaleColor);
     color: white;
+    width: 100%;
 }
 
 .articleLine {
-    display: flex; 
+    display: flex;
 }
 
 .articleLine div {
@@ -325,7 +327,7 @@ a.info {
 .articleLine .title {
     font-weight: bold;
     min-width: 200px;
-    width: 200px;
+    width: 100%;
 }
 
 .articleLine .content {
@@ -337,7 +339,7 @@ a.info {
     border: 1px solid var(--backgroundColor);
 }
 
-/** 
+/**
  * Footer global de la page.
  */
 footer {
@@ -349,4 +351,91 @@ footer {
     padding: 20px;
     color: white;
     background-color: var(--headerColor);
+}
+
+/**************** ADMIN ****************/
+
+/* Table */
+table.table-articles {
+    display: flex;
+    flex-direction: column;
+    border-collapse: collapse;
+    justify-content: space-between;
+}
+
+/* Title */
+tr.table-title {
+    display: flex;
+    background-color: var(--headerColor);
+    height: 40px;
+}
+
+tr.table-title th {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.article-title {
+    display: flex;
+    align-items: center;
+    padding-left: 1em;
+    width: 100%;
+    border-right: 1px solid white;
+}
+
+.article-view,
+.article-comments,
+.article-date
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 256px;
+    border-right: 1px solid white;
+}
+
+.article-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 8px;
+    width: 512px;
+}
+
+/* Table line */
+tr.table-line {
+    display: flex;
+    border-top: solid 1px #f1f0eb;
+    height: 40px;
+}
+
+tr.table-line:nth-child(odd) {
+    background-color: var(--commentPaleColorDarker);
+}
+
+/* Filter */
+button.filter-btn {
+    background-color: var(--commentColor);
+    padding: .25em .7em;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+/* Comments */
+li.comment-wrapper {
+    position: relative;
+}
+
+a.remove-button {
+    position: absolute;
+    right: 0;
+    display: flex;
+    padding: .25em .5em;
+    background-color: var(--commentColor);
+    color: white;
 }

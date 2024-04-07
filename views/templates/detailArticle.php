@@ -20,22 +20,32 @@
 
 <div class="comments">
     <h2 class="commentsTitle">Vos Commentaires</h2>
-    <?php 
-        if (empty($comments)) {
-            echo '<p class="info">Aucun commentaire pour cet article.</p>';
-        } else {
-            echo '<ul>';
-            foreach ($comments as $comment) {
-                echo '<li>';
-                echo '  <div class="smiley">☻</div>';
-                echo '  <div class="detailComment">';
-                echo '      <h3 class="info">Le ' . Utils::convertDateToFrenchFormat($comment->getDateCreation()) . ", " . Utils::format($comment->getPseudo()) . ' a écrit :</h3>';
-                echo '      <p class="content">' . Utils::format($comment->getContent()) . '</p>';
-                echo '  </div>';
-                echo '</li>';
-            }               
-            echo '</ul>';
-        } 
+    <?php if (!empty($comments)): ?>
+        <?php foreach ($comments as $comment): ?>
+            <li class="comment-wrapper">
+                <div class="smiley">☻</div>
+                <div class="detailComment">
+                    <h3 class="info">
+                        Le <?= Utils::convertDateToFrenchFormat($comment->getDateCreation()) ?>, <?= Utils::format($comment->getPseudo()) ?> a écrit :
+                    </h3>
+                    <p class="content">
+                        <?= Utils::format($comment->getContent()) ?>
+                    </p>
+                </div>
+                <?php if (isset($_SESSION['user'])): ?>
+                    <a
+                        class="remove-button"
+                        href="index.php?action=deleteComment&id=<?= $comment->getId() ?>&articleId=<?= $article->getId() ?>"
+                        <?= Utils::askConfirmation("Êtes-vous sûr de vouloir supprimer ce commentaire ?") ?>
+                    >
+                        Supprimer
+                    </a>
+                <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+    <?php
+        else: echo '<p class="info">Aucun commentaire pour cet article.</p>';
+        endif;
     ?>
 
     <form action="index.php" method="post" class="foldedCorner">

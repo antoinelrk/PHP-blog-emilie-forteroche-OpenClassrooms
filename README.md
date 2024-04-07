@@ -3,7 +3,7 @@
 ## Pour utiliser ce projet : 
 
 - Commencer par cloner le projet. 
-- installez le projet chez vous, dans un dossier exécuté par un serveur local (type MAMP, WAMP, LAMP, etc...)
+- Installez le projet chez vous, dans un dossier exécuté par un serveur local (type MAMP, WAMP, LAMP, etc...)
 - Une fois installé chez vous, créez un base de données vide appelée : "blog_forteroche"
 - Importez le fichier _blog_forteroche.sql_ dans votre base de données.
 

@@ -16,22 +16,30 @@ Pour vous connecter en partie admin, le login est "Emilie" et le mot de passe es
 
 ### Lancez avec Docker
 
-Créer un réseau docker:
+Un fichier ``docker-compose.yml`` est disponible pour lancer la stack directement (Avec base de donnée et phpmyadmin)
+
+Créer un réseau docker & docker-compose:
 ````shell
 docker network create <network_name>
 ````
 
+Lancer la stack:
 ````shell
 docker-compose up -d --build
 ````
-
+Le site ne se lance pas automatiquement (pas de serveur web), donc il faut entrer dans le conteneur:
 ````shell
 docker exec -ti blog_forteroche /bin/sh
 ````
 
+... et lancer php:
 ````shell
 php83 -S 0.0.0.0:<PORT>
 ````
+
+Les urls:
+- http://localhost:8080 (blog)
+- http://localhost:8081 (phpmyadmin)
 
 
 ## Problèmes courants :

@@ -9,7 +9,7 @@
 
 <div class="adminArticle">
 
-    <form action="../../../index.php?action=monitoring" method="GET">
+    <form class="filter-form" action="../../../index.php?action=monitoring" method="GET">
         <input type="hidden" name="action" value="monitoring">
         <select name="type">
             <option <?= $_GET['type'] === 'title' ? 'selected' : '' ?> value="title">Titre</option>
@@ -21,7 +21,7 @@
             <option <?= $_GET['order'] === 'desc' ? 'selected' : '' ?> value="desc">A-Z</option>
             <option <?= $_GET['order'] === 'asc' ? 'selected' : '' ?> value="asc">Z-A</option>
         </select>
-        <button type="submit">
+        <button class="filter-btn" type="submit">
             Trier
         </button>
     </form>

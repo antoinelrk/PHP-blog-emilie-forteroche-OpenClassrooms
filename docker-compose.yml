@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+
+  blog_forteroche:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    container_name: blog_forteroche
+    depends_on:
+      - database
+    volumes:
+      - ./:/var/www
+    ports:
+      - "8080:80"
+    networks:
+      - local
+
+  database:
+    image: mariadb:10.4.4
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    container_name: database
+    restart: always
+    volumes:
+      - ./database:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=local
+      - MYSQL_PASSWORD=local
+      - MYSQL_DATABASE=blog_forteroche
+      - MYSQL_USER=local
+    networks:
+      - local
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    depends_on:
+      - database
+    environment:
+      - PMA_ARBITRARY=1
+    ports:
+      - "8081:80"
+    networks:
+      - local
+
+networks:
+  local:
+    name: local
+    external: true

@@ -34,13 +34,19 @@ docker exec -ti blog_forteroche /bin/sh
 
 ... et lancer php:
 ````shell
-php83 -S 0.0.0.0:<PORT>
+php83 -S 0.0.0.0:80
 ````
 
 Les urls:
 - http://localhost:8080 (blog)
 - http://localhost:8081 (phpmyadmin)
 
+Pour se connecter a PMA:
+- Serveur: ``database``
+- Login: ``root``
+- Password: ``local``
+
+**Important: Le fichier ``blog_forteroche_updated.sql`` contient la nouvelle structure de la base de donnée, n'oubliez pas de l'importer avec PhpMyAdmin !**
 
 ## Problèmes courants :
 
